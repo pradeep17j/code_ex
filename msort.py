@@ -6,7 +6,6 @@ unsorted=[1]
 
 # The Merge Sort function
 # Takes in the unsorted array as parameter
-#
 
 def msort(unsorted):
 
