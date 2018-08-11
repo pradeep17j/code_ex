@@ -1,0 +1,85 @@
+#!/bin/python
+
+import math
+import os
+import random
+import re
+import sys
+
+    
+def mergeSort(arr):
+       
+    if (len(arr)-1) == 1:
+             
+        return arr
+       
+    cnt = arr.pop(0)
+    t_sz = len(arr)
+    l_arr = arr[0:int(t_sz/2)]
+    r_arr = arr[int(t_sz/2):]
+   
+    l_arr.insert(0,cnt)
+    r_arr.insert(0,cnt)
+    
+    l_ret = mergeSort(l_arr)
+    r_ret = mergeSort(r_arr)
+     
+    cnt = l_ret.pop(0) + r_ret.pop(0)
+    
+    
+    i=j=0
+    invs=0
+    sorted = list()
+    mid = len(l_ret)
+    largest  = max(len(l_ret), len(r_ret))
+    
+    while(i < len(l_ret) and j < len(r_ret)):
+        if l_ret[i] <= r_ret[j]:
+            sorted.append(l_ret[i])
+            i = i + 1
+            
+        elif r_ret[j] < l_ret[i]:
+            sorted.append(r_ret[j])
+                        
+            invs = invs + (mid - i)
+            j = j + 1
+
+            
+        
+    if (len(l_ret[i:]) > 0):
+        sorted = sorted + l_ret[i:]
+    elif (len(r_ret[j:]) > 0):
+        sorted = sorted + r_ret[j:]
+        
+    cnt = cnt + invs
+    
+    sorted.insert(0,cnt)
+    
+    return sorted
+        
+# Complete the countInversions function below.
+def countInversions(arr):
+        
+    if len(arr) == 0:
+        return 0
+    arr.insert(0,0)
+    ret_arr = mergeSort(arr)
+    count = ret_arr.pop(0)
+    return count      
+        
+            
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    t = int(raw_input())
+
+    for t_itr in xrange(t):
+        n = int(raw_input())
+
+        arr = map(int, raw_input().rstrip().split())
+
+        result = countInversions(arr)
+
+        fptr.write(str(result) + '\n')
+
+    fptr.close()
